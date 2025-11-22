@@ -9,7 +9,7 @@ import java.util.List;
 public class Nodes extends JFrame {
     private NodePanel nodePanel;
     private JTextField inputField;
-    private JButton addButton;
+    private JButton addLastBtn;
     private BufferedImage nodeImage;
     private JButton resetBtn;
     private JButton removeFirstBtn;
@@ -29,7 +29,7 @@ public class Nodes extends JFrame {
     private Timer animationTimer;
 
     public Nodes() {
-        setTitle("Node Creator");
+        setTitle("Linked List Draft");
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -49,10 +49,10 @@ public class Nodes extends JFrame {
         inputField.setBounds(50, 30, 100, 30);
         add(inputField);
 
-        addButton = new JButton("Add Last");
-        addButton.setBounds(180, 30, 100, 30);
-        addButton.setFocusable(false);
-        add(addButton);
+        addLastBtn = new JButton("Add Last");
+        addLastBtn.setBounds(180, 30, 100, 30);
+        addLastBtn.setFocusable(false);
+        add(addLastBtn);
 
         addFirstBtn = new JButton("Add First");
         addFirstBtn.setBounds(290, 30, 100, 30);
@@ -65,19 +65,19 @@ public class Nodes extends JFrame {
         add(resetBtn);
 
         removeFirstBtn = new JButton("Remove First");
-        removeFirstBtn.setBounds(400, 30, 120, 30);
+        removeFirstBtn.setBounds(530, 30, 120, 30);
         removeFirstBtn.setFocusable(false);
         add(removeFirstBtn);
 
         removeLastBtn = new JButton("Remove Last");
-        removeLastBtn.setBounds(530, 30, 120, 30);
+        removeLastBtn.setBounds(400, 30, 120, 30);
         removeLastBtn.setFocusable(false);
         add(removeLastBtn);
 
         removeFirstBtn.addActionListener(e -> removeFirstNode());
         removeLastBtn.addActionListener(e -> removeLastNode());
 
-        addButton.addActionListener(e -> addNode(inputField.getText()));
+        addLastBtn.addActionListener(e -> addLast(inputField.getText()));
         resetBtn.addActionListener(e -> resetNode());
         addFirstBtn.addActionListener(e -> addFirst(inputField.getText()));
 
@@ -88,6 +88,51 @@ public class Nodes extends JFrame {
     }
 
     private void addFirst(String text) {
+        if (text.isEmpty()) return;
+
+        JLabel node = new JLabel(text, new ImageIcon(nodeImage), JLabel.CENTER);
+        node.setHorizontalTextPosition(JLabel.CENTER);
+        node.setVerticalTextPosition(JLabel.CENTER);
+        node.setFont(new Font("Arial", Font.BOLD, 18));
+        node.setForeground(Color.WHITE);
+
+        node.setBounds(-nodeWidth, marginY, nodeWidth, nodeHeight);
+        nodePanel.add(node);
+        nodePanel.revalidate();
+        nodePanel.repaint();
+
+        nodes.addFirst(node);
+
+        inputField.setText("");
+    }
+
+    private void removeLastNode() {
+        if (!nodes.isEmpty()) {
+            JLabel first = nodes.removeLast();
+            nodePanel.remove(first);
+            nodePanel.revalidate();
+            nodePanel.repaint();
+        }
+    }
+
+    private void removeFirstNode() {
+        if (!nodes.isEmpty()) {
+            JLabel last = nodes.removeFirst();
+            nodePanel.remove(last);
+            nodePanel.revalidate();
+            nodePanel.repaint();
+        }
+    }
+
+
+    private void resetNode() {
+        nodes.clear();
+        nodePanel.removeAll();
+        nodePanel.revalidate();
+        nodePanel.repaint();
+    }
+
+    private void addLast(String text) {
         if (text.isEmpty()) return;
 
         JLabel node = new JLabel(text, new ImageIcon(nodeImage), JLabel.CENTER);
@@ -109,51 +154,6 @@ public class Nodes extends JFrame {
         nodePanel.repaint();
 
         nodes.add(node);
-
-        inputField.setText("");
-    }
-
-    private void removeFirstNode() {
-        if (!nodes.isEmpty()) {
-            JLabel first = nodes.removeLast();
-            nodePanel.remove(first);
-            nodePanel.revalidate();
-            nodePanel.repaint();
-        }
-    }
-
-    private void removeLastNode() {
-        if (!nodes.isEmpty()) {
-            JLabel last = nodes.removeFirst();
-            nodePanel.remove(last);
-            nodePanel.revalidate();
-            nodePanel.repaint();
-        }
-    }
-
-
-    private void resetNode() {
-        nodes.clear();
-        nodePanel.removeAll();
-        nodePanel.revalidate();
-        nodePanel.repaint();
-    }
-
-    private void addNode(String text) {
-        if (text.isEmpty()) return;
-
-        JLabel node = new JLabel(text, new ImageIcon(nodeImage), JLabel.CENTER);
-        node.setHorizontalTextPosition(JLabel.CENTER);
-        node.setVerticalTextPosition(JLabel.CENTER);
-        node.setFont(new Font("Arial", Font.BOLD, 18));
-        node.setForeground(Color.WHITE);
-
-        node.setBounds(-nodeWidth, marginY, nodeWidth, nodeHeight);
-        nodePanel.add(node);
-        nodePanel.revalidate();
-        nodePanel.repaint();
-
-        nodes.addFirst(node);
 
         inputField.setText("");
     }
