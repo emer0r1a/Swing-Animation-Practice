@@ -15,8 +15,9 @@ public class Nodes extends JFrame {
     private JButton removeFirstBtn;
     private JButton removeLastBtn;
     private JButton addFirstBtn;
+    private JButton reverseBtn;
 
-    private final List<JLabel> nodes = new ArrayList<>();
+    private List<JLabel> nodes = new ArrayList<>();
     private final int spacing = 100;
     private final int nodeWidth = 59;
     private final int nodeHeight = 59;
@@ -74,6 +75,11 @@ public class Nodes extends JFrame {
         removeLastBtn.setFocusable(false);
         add(removeLastBtn);
 
+        reverseBtn = new JButton("Reverse");
+        reverseBtn.setBounds(800, 30, 100, 30);
+        reverseBtn.setFocusable(false);
+        add(reverseBtn);
+
         removeFirstBtn.addActionListener(e -> removeFirstNode());
         removeLastBtn.addActionListener(e -> removeLastNode());
 
@@ -81,10 +87,20 @@ public class Nodes extends JFrame {
         resetBtn.addActionListener(e -> resetNode());
         addFirstBtn.addActionListener(e -> addFirst(inputField.getText()));
 
+        reverseBtn.addActionListener(e -> reverseList());
+
         animationTimer = new Timer(20, e -> animateAllNodes());
         animationTimer.start();
 
         setVisible(true);
+    }
+
+    private void reverseList() {
+        if(!nodes.isEmpty())  {
+            nodes =  nodes.reversed();
+            nodePanel.revalidate();
+            nodePanel.repaint();
+        }
     }
 
     private void addFirst(String text) {
